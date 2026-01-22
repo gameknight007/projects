@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://kr0o0d2xx3ei"]
+
+[ext_resource type="Script" uid="uid://cwctteh2g32le" path="res://scripts/horn.gd" id="1_qfemb"]
+[ext_resource type="AudioStream" uid="uid://x6a5hrebxmxj" path="res://assets/sounds/siren.wav" id="2_wfqtc"]
+
+[node name="horn" type="Node2D"]
+script = ExtResource("1_qfemb")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_wfqtc")
+
+[node name="turnontimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="turnofftimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="timeout" from="turnontimer" to="." method="_on_turnontimer_timeout"]
+[connection signal="timeout" from="turnofftimer" to="." method="_on_timer_timeout"]
