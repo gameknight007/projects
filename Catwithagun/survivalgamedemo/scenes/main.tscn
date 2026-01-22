@@ -1,0 +1,102 @@
+[gd_scene load_steps=9 format=3 uid="uid://g8wrv8doc43u"]
+
+[ext_resource type="Script" uid="uid://plwu1cr5a57m" path="res://scripts/main.gd" id="1_r0t3n"]
+[ext_resource type="PackedScene" uid="uid://2edcty45oey6" path="res://scenes/player.tscn" id="1_u7kj6"]
+[ext_resource type="PackedScene" uid="uid://c8uxvc0s5wwb4" path="res://scenes/enemy.tscn" id="2_5sh0k"]
+[ext_resource type="Theme" uid="uid://cjf5kbwftvaah" path="res://assets/THEMES/cattheme.tres" id="4_d2eia"]
+
+[sub_resource type="Gradient" id="Gradient_jyhfs"]
+colors = PackedColorArray(0, 0.403922, 0.223529, 1, 0.133333, 0.776471, 0.262745, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_tbgi4"]
+frequency = 0.006
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tefeu"]
+color_ramp = SubResource("Gradient_jyhfs")
+noise = SubResource("FastNoiseLite_tbgi4")
+
+[sub_resource type="Curve2D" id="Curve2D_fcq2q"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -536.662, -530.655, 0, 0, 0, 0, 1048.43, -548.935, 0, 0, 0, 0, 1071.57, 437.362, 0, 0, 0, 0, -576, 430, 0, 0, 0, 0, -536.662, -530.655)
+}
+point_count = 5
+
+[node name="main" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_r0t3n")
+enemyscene = ExtResource("2_5sh0k")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1148.0
+offset_bottom = 642.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("NoiseTexture2D_tefeu")
+
+[node name="player" parent="." instance=ExtResource("1_u7kj6")]
+position = Vector2(464, 290)
+
+[node name="enemyspawnpath" type="Path2D" parent="player"]
+position = Vector2(-355.241, 87.6923)
+scale = Vector2(1.29646, 1.25824)
+curve = SubResource("Curve2D_fcq2q")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="player/enemyspawnpath"]
+position = Vector2(-536.662, -530.655)
+rotation = -0.0115319
+
+[node name="spawntimer" type="Timer" parent="."]
+wait_time = 1.5
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="Gameover" type="Panel" parent="CanvasLayer2"]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_d2eia")
+
+[node name="Label" type="Label" parent="CanvasLayer2/Gameover"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.0
+offset_top = -11.5
+offset_right = 44.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "GAMEOVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer2/Gameover"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -121.0
+offset_top = -86.0
+offset_right = 121.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "QUIT"
+
+[connection signal="health_depleted" from="player" to="." method="_on_player_health_depleted"]
+[connection signal="timeout" from="spawntimer" to="." method="_on_spawntimer_timeout"]
+[connection signal="pressed" from="CanvasLayer2/Gameover/Button" to="." method="_on_button_pressed"]

@@ -1,0 +1,152 @@
+[gd_scene load_steps=11 format=3 uid="uid://qecf7b1vetff"]
+
+[ext_resource type="Script" uid="uid://brqyrj23qgl6v" path="res://scripts/exp.gd" id="1_43ery"]
+[ext_resource type="Texture2D" uid="uid://dtd1qgyxr56ja" path="res://assets/character/shadow.png" id="1_iaimj"]
+[ext_resource type="Texture2D" uid="uid://cm2ajfrpms1j7" path="res://assets/ART/TILESHEET.png" id="1_p4tpk"]
+[ext_resource type="Shader" uid="uid://c8qsdtjdkr8tq" path="res://assets/character/shaders/player.gdshader" id="2_eoh3a"]
+[ext_resource type="AudioStream" uid="uid://bfrqd74g6chna" path="res://assets/sounds/retro-coin-4-236671.mp3" id="5_j6byo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bcab0"]
+radius = 75.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vwm2x"]
+shader = ExtResource("2_eoh3a")
+shader_parameter/width = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/flash = false
+shader_parameter/flash_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_7x3nb"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-25, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("shadow:scale:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.416667, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("shadow:scale:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.769231, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_0wfv8"]
+resource_name = "new_animation"
+length = 1.2
+loop_mode = 1
+step = 0.2
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.2, 0.6)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(-25, -0.25, 0, 0.25, 0, -28, -0.25, 0, 0.25, 0, -22, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.6, 1.2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("shadow:scale:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0.416667, -0.25, 0, 0.25, 0, 0.361111, -0.25, 0, 0.25, 0, 0.472222, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.6, 1.2)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("shadow:scale:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0.769231, -0.25, 0, 0.25, 0, 0.615385, -0.25, 0, 0.25, 0, 0.923077, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.6, 1.2)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uncw8"]
+_data = {
+&"RESET": SubResource("Animation_7x3nb"),
+&"new_animation": SubResource("Animation_0wfv8")
+}
+
+[node name="exp" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_43ery")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bcab0")
+
+[node name="shadow" type="Sprite2D" parent="."]
+scale = Vector2(0.416667, 0.769231)
+texture = ExtResource("1_iaimj")
+region_rect = Rect2(224, 600, 64, 64)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_vwm2x")
+position = Vector2(0, -25)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_p4tpk")
+region_enabled = true
+region_rect = Rect2(224, 600, 64, 64)
+
+[node name="COLLECTED" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_j6byo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_uncw8")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="finished" from="COLLECTED" to="." method="_on_collected_finished"]

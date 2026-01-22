@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://oith4wml0cxr"]
+
+[ext_resource type="Script" uid="uid://d2af4o6eyh4i7" path="res://scripts/softcollision.gd" id="1_v4ckl"]
+
+[node name="softcollision" type="Area2D"]
+script = ExtResource("1_v4ckl")

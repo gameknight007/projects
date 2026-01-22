@@ -1,0 +1,92 @@
+[gd_scene load_steps=4 format=3 uid="uid://8utp0rgf7apm"]
+
+[ext_resource type="Script" uid="uid://blimkboegf4n1" path="res://scripts/mainmenu.gd" id="1_o571y"]
+[ext_resource type="Theme" uid="uid://cjf5kbwftvaah" path="res://assets/THEMES/cattheme.tres" id="1_ofpks"]
+[ext_resource type="Texture2D" uid="uid://bc3s0gu35qur8" path="res://assets/ui/LOGOBLACK.png" id="4_bx5ug"]
+
+[node name="mainmenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ofpks")
+script = ExtResource("1_o571y")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -142.0
+offset_top = -106.0
+offset_right = 142.0
+offset_bottom = 234.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="playbutton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "START"
+
+[node name="settingsbutton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "SETTINGS"
+
+[node name="exitbutton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "EXIT"
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 7.0
+offset_right = 45.0
+offset_bottom = 30.0
+text = "V 1.0"
+
+[node name="TextureRect" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = -44.0
+offset_right = 37.0
+offset_bottom = -6.0
+grow_vertical = 0
+texture = ExtResource("4_bx5ug")
+expand_mode = 1
+
+[node name="title" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -374.0
+offset_right = 374.0
+offset_bottom = 160.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderLarge"
+text = "CAT-ASTOPHE
+MOUSE MAYHEM"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Panel/VBoxContainer/playbutton" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/exitbutton" to="." method="_on_exitbutton_pressed"]

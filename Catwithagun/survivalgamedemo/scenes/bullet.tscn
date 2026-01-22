@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://igpb3iwsgfpr"]
+
+[ext_resource type="Script" uid="uid://dv363e8r37j45" path="res://scripts/bullet.gd" id="1_tpm8g"]
+[ext_resource type="Shader" uid="uid://c8qsdtjdkr8tq" path="res://assets/character/shaders/player.gdshader" id="2_ws8qd"]
+[ext_resource type="Texture2D" uid="uid://cm2ajfrpms1j7" path="res://assets/ART/TILESHEET.png" id="3_7234a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mxugh"]
+radius = 15.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wdkmc"]
+shader = ExtResource("2_ws8qd")
+shader_parameter/width = 1.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/flash = false
+shader_parameter/flash_color = Color(0, 0, 0, 1)
+
+[node name="bullet" type="Area2D"]
+top_level = true
+collision_layer = 16
+collision_mask = 4
+script = ExtResource("1_tpm8g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(15, 0)
+shape = SubResource("CircleShape2D_mxugh")
+
+[node name="bulletsprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_wdkmc")
+scale = Vector2(0.19, 0.19)
+texture = ExtResource("3_7234a")
+region_enabled = true
+region_rect = Rect2(539, 34, 255, 42)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

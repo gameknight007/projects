@@ -1,0 +1,173 @@
+[gd_scene load_steps=18 format=3 uid="uid://c8uxvc0s5wwb4"]
+
+[ext_resource type="Script" uid="uid://4h7aly3rcet" path="res://scripts/enemy.gd" id="1_6xhtt"]
+[ext_resource type="PackedScene" uid="uid://qecf7b1vetff" path="res://scenes/exp.tscn" id="2_3y1x2"]
+[ext_resource type="PackedScene" uid="uid://dwtarvqeprdgd" path="res://scenes/deatheffect.tscn" id="2_7yjpp"]
+[ext_resource type="Texture2D" uid="uid://dtd1qgyxr56ja" path="res://assets/character/shadow.png" id="2_gsqgr"]
+[ext_resource type="Shader" uid="uid://c8qsdtjdkr8tq" path="res://assets/character/shaders/player.gdshader" id="3_0gnec"]
+[ext_resource type="Texture2D" uid="uid://dskt4iwp0uqi4" path="res://assets/character/mouse.png" id="3_luln7"]
+[ext_resource type="PackedScene" uid="uid://oith4wml0cxr" path="res://scenes/softcollision.tscn" id="5_fg0gi"]
+[ext_resource type="AudioStream" uid="uid://gu8cuy372hio" path="res://assets/sounds/retro-hurt-2-236675.mp3" id="8_yxj0v"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1ussq"]
+radius = 32.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5me4m"]
+resource_local_to_scene = true
+shader = ExtResource("3_0gnec")
+shader_parameter/width = 2.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/flash = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gwgh0"]
+radius = 34.0588
+
+[sub_resource type="Animation" id="Animation_cdblv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("enemysprite:material:shader_parameter/flash")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_yiivp"]
+resource_name = "hit"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("enemysprite:material:shader_parameter/flash")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l3f2h"]
+_data = {
+&"RESET": SubResource("Animation_cdblv"),
+&"hit": SubResource("Animation_yiivp")
+}
+
+[sub_resource type="Animation" id="Animation_w7kf1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("enemysprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("shadow:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_3gdpj"]
+resource_name = "death"
+length = 0.2
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("enemysprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("shadow:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_56ey6"]
+_data = {
+&"RESET": SubResource("Animation_w7kf1"),
+&"death": SubResource("Animation_3gdpj")
+}
+
+[node name="enemy" type="CharacterBody2D" groups=["ENEMY"]]
+collision_layer = 4
+collision_mask = 3
+motion_mode = 1
+script = ExtResource("1_6xhtt")
+deatheffect = ExtResource("2_7yjpp")
+expscene = ExtResource("2_3y1x2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1ussq")
+
+[node name="shadow" type="Sprite2D" parent="."]
+scale = Vector2(0.583333, 0.923077)
+texture = ExtResource("2_gsqgr")
+
+[node name="enemysprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_5me4m")
+position = Vector2(0, -29)
+texture = ExtResource("3_luln7")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="softcollision" parent="." instance=ExtResource("5_fg0gi")]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="softcollision"]
+shape = SubResource("CircleShape2D_gwgh0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_l3f2h")
+}
+
+[node name="hitsound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_yxj0v")
+
+[node name="damagenumberpos" type="Node2D" parent="."]
+position = Vector2(0, -71)
+
+[node name="deathtimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="animplayercharacter" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_56ey6")
+}
+
+[connection signal="timeout" from="deathtimer" to="." method="queue_free"]
